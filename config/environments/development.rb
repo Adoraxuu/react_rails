@@ -8,6 +8,8 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
 
+  config.allowed_cors_origins = ['http://localhost:5173']
+
   # Do not eager load code on boot.
   config.eager_load = false
 

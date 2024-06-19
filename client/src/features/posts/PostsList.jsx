@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { API_URL } from "../../constants"
+import { API_URL } from "../../constants";
 
-function PostList(){
+function PostsList() {
     const [posts, setPosts] = useState([]);
-    const [, setLoading] = useState(true);
-    const [, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function loadPosts(){
+        async function loadPosts() {
             try {
                 const response = await fetch(API_URL);
+                const text = await response.text();
+                const json = JSON.parse(text);
                 if (response.ok) {
-                    const json = await response.json();
                     setPosts(json);
                 } else {
-                    throw response;
+                    throw new Error(`Error: ${response.status} - ${json.message || 'Unexpected error'}`);
                 }
             } catch (error) {
                 setError(error);
@@ -26,16 +27,24 @@ function PostList(){
         loadPosts();
     }, []);
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
     return (
         <div>
-            {posts.map((post)=>{
-                <div key={post.id} className='post-container'>
+            {posts.map((post) => (
+                <div key={post.id} className="post-container">
                     <h2>{post.title}</h2>
                     <p>{post.body}</p>
                 </div>
-            })}
+            ))}
         </div>
     );
 }
 
-export default PostList
+export default PostsList;

@@ -53,6 +53,13 @@ module Api
       def post_params
         params.require(:post).permit(:title, :body)
       end
+
+      def set_cors_headers
+        headers['Access-Control-Allow-Origin'] = Rails.application.config.allowed_cors_origins.join(', ')
+        headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization'
+        headers['Access-Control-Expose-Headers'] = 'Authorization'
+      end
     end
   end
 end
