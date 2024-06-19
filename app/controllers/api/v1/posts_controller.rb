@@ -14,6 +14,7 @@ module Api
 
       # GET /posts/1
       def show
+        sleep 3
         render json: @post
       end
 
