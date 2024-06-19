@@ -10,26 +10,28 @@ function PostDetails(){
         const fetchCurrentPost = async () => {
             try{
                 const response = await fetch(`${API_URL}/${id}`);
-                if (!response.ok) {
-                    throw response;
+                if (response.ok) {
+                    const json = await response.json();
+                    setPost(json);
+                } else {
+                    throw response
                 }
-                setPost(json);
             } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
+                console.log("An error occurred:", error);
+            };
         };
         fetchCurrentPost();
     }, [id]);
 
-    if (!post) return <div>Loading...</div>;
+    if (!post) return <h2>Loading...</h2>;
 
-    return <div>
-        <h2>{post.title}</h2>
-        <p>{post.body}</p>
-        <Link to={"/"}>Back to Posts</Link>
-    </div>
+    return (
+        <div>
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+            <Link to="/">Back to Posts</Link>
+        </div>
+    );
 }
 
 export default PostDetails;

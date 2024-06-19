@@ -12,7 +12,6 @@ function App() {
     <Router>
       <div className="app">
         <h1>React on Rails</h1>
-        <p>Find this application layout in client/src/App.jsx</p>
         <NavBar />
         <AppRoutes />
       </div>    
