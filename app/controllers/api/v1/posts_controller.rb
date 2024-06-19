@@ -14,7 +14,6 @@ module Api
 
       # GET /posts/1
       def show
-        sleep 3
         render json: @post
       end
 
@@ -23,7 +22,7 @@ module Api
         @post = Post.new(post_params)
 
         if @post.save
-          render json: @post, status: :created, location: @post
+          render json: @post, status: :created, location: api_v1_post_url(@post)
         else
           render json: @post.errors, status: :unprocessable_entity
         end
