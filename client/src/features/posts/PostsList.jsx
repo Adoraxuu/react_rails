@@ -7,33 +7,26 @@ function PostsList() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function loadPosts() {
+        const loadPosts = async () => {
             try {
                 const response = await fetch(API_URL);
-                const text = await response.text();
-                const json = JSON.parse(text);
-                if (response.ok) {
-                    setPosts(json);
-                } else {
+                const json = await response.json();
+                if (!response.ok) {
                     throw new Error(`Error: ${response.status} - ${json.message || 'Unexpected error'}`);
                 }
+                setPosts(json);
             } catch (error) {
                 setError(error);
-                setLoading(false);
             } finally {
                 setLoading(false);
             }
-        }
+        };
+
         loadPosts();
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div>
