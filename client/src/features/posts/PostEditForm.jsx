@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { API_URL } from "../../constants";
+import { fetchPost, updatePost } from "../../services/postService";
 
 function PostEditForm() {
     const [post, setPost] = useState(null);
     const { id } = useParams();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCurrentPost = async () => {
             try{
-                const response = await fetch(`${API_URL}/${id}`);
-                if (response.ok) {
-                    const json = await response.json();
-                    setPost(json);
-                } else {
-                    throw response
-                }
+                const data = await fetchPost(id);
+                setPost(data);
             } catch (error) {
                 console.log("An error occurred:", error);
             } finally{
@@ -31,25 +25,16 @@ function PostEditForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const updatedPost = {
+            title: post.title,
+            body: post.body,
+        };
+
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    title: post.title, 
-                    body: post.body,
-                }),
-            });
-            if (response.ok) {
-                const json = await response.json();
-                navigate(`/posts/${id}`);
-            } else {
-                throw response;
-            } 
-        } catch (error) {
-            console.log("An error occurred:", error);
+            const response = await updatePost(id, updatedPost);
+            navigate(`/posts/${response.id}`);
+        } catch (e) {
+            console.error("Failed to update post: ", e);
         }
     };
 
