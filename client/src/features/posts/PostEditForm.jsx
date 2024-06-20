@@ -60,7 +60,7 @@ function PostEditForm() {
             <h2>Edit Post</h2>
             <form onSubmit = {handleSubmit}>
                 <div>
-                    <label htmlFor="post-title">Title</label>
+                    <label htmlFor="post-title">Title:</label>
                     <br />
                     <input
                         type="text"
@@ -78,6 +78,8 @@ function PostEditForm() {
                     />
                 </div>
                 <div>
+                    <Link to="/">Back to Posts</Link>
+                    {" | "}
                     <button type="submit">Update Post</button>
                 </div>
             </form>
